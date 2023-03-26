@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
 
 * {
   box-sizing: border-box;
@@ -23,12 +23,14 @@ form {
   text-align: center;
 }
 
-.image{
+.image {
   height: 20rem;
 }
-.image img{
+
+.image img {
   height: 100%;
 }
+
 .main-header {
   width: 100%;
   height: 3.5rem;

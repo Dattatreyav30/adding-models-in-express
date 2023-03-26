@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize'); //importing sequelize moudule
+const Sequelize = require('sequelize');
 
-const sequelize = require('../util/database'); // importing databaase
+const sequelize = require('../util/database');
 
 const Product = sequelize.define('product', {
   id: {
@@ -9,22 +9,19 @@ const Product = sequelize.define('product', {
     allowNull: false,
     primaryKey: true
   },
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
+  title: Sequelize.STRING,
   price: {
     type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
     allowNull: false
   },
   description: {
     type: Sequelize.STRING,
     allowNull: false
-  },
-  imageUrl: {
-    type: Sequelize.TEXT,
-    allowNull: false
   }
-})
+});
 
 module.exports = Product;
