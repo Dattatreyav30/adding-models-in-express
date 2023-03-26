@@ -9,7 +9,8 @@ const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
 const Product = require('./models/product');
 const User = require('./models/user');
-
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item')
 const app = express();
 
 
@@ -29,18 +30,27 @@ app.use(errorController.get404);
 
 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-User.hasMany(Product);
+//User.hasMany(Product);
 
-app.use((req,res,next)=>{
+User.hasOne(Cart)
+//Cart.belongsTo(User)
+
+Cart.belongsToMany(Product, { through: CartItem });  //one cart can have multiple products
+
+Product.belongsToMany(Cart, { through: CartItem }); //single product can be part of multiple carts
+
+
+
+app.use((req, res, next) => {
   User.findByPk(1)
-  .then((user)=>{
-    req.user = user;
-    console.log(user)
-    next();
-  })
-  .catch((err)=>{  
-    console.error("cant find yo");
-  })
+    .then((user) => {
+      req.user = user;
+      console.log(user)
+      next();
+    })
+    .catch((err) => {
+      console.error("cant find yo");
+    })
 })
 
 sequelize
@@ -48,14 +58,16 @@ sequelize
   .then(result => {
     return User.findByPk(1)
   })
-  .then((user) => {
+  .then((user) => { 
     if (!user) {
       return User.create({ name: 'datta', email: 'test@test.com' })
     }
     return user
   })
-  .then((user)=>{
-    console.log(user);
+  .then((user) => {
+    return user.createCart();
+  })
+  .then((cart)=>{
     app.listen(3000)
   })
   .catch(err => {
